@@ -26,7 +26,6 @@ export default {
       return DateTime.fromISO(this.datetime).toFormat("HH:mm");
     },
     getDateNumberPosition(){
-
       return Math.ceil((DateTime.fromISO(this.datetime).diff(DateTime.now().startOf("week"), "day").toObject()).days)
     }
   }

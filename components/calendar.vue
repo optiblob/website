@@ -100,7 +100,9 @@
             <div class="flex items-center justify-center py-3" v-for="day in days">
                   <span class="flex flex-row items-center">{{ day.shortTitle }}
                     <span
-                      :class="`${day.isToday ? 'flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white' : 'items-center justify-center font-semibold text-gray-900'} ml-1.5`">{{ day.dateNumber }}</span>
+                      :class="`${day.isToday ? 'flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white' : 'items-center justify-center font-semibold text-gray-900'} ml-1.5`">{{
+                        day.dateNumber
+                      }}</span>
                   </span>
             </div>
           </div>
@@ -274,7 +276,8 @@
             <!-- Events -->
             <ol class="col-start-1 col-end-2 row-start-1 grid grid-cols-1 sm:grid-cols-7 sm:pr-8"
                 style="grid-template-rows: 1.75rem repeat(288, minmax(0, 1fr)) auto">
-              <timing-scope v-for="timing in timingScopes" :title="timing.title" :datetime="timing.date" :grid-row="timing.gridRow" :color="timing.color" />
+              <timing-scope v-for="(timing, iterator) in timingScopes" :title="timing.title" :datetime="timing.date"
+                            :grid-row="timing.gridRow" :color="timing.color" v-bind:key="iterator"/>
             </ol>
           </div>
         </div>

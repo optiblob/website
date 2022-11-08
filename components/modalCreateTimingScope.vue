@@ -17,28 +17,34 @@
                     <input type="text" name="titre" id="titre"
                            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                            placeholder="Aller chercher les enfants" v-model="title">
+                    <label v-if="errors.title" class="block text-sm text-red-500 ">Titre invalide</label>
                   </div>
                 </div>
                 <div class="flex flex-row justify-between w-full">
                   <div class="w-1/2">
-                    <label class="block text-sm font-medium text-gray-700">Date de début</label>
-                    <date-picker
-                      inputClass="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      id="startDate"
-                      v-model="datePicker.start" format="DD/MM/YYYY HH:mm" value-type="format"
-                      :hour-options="datePicker.hours"
-                      type="datetime"
-                      placeholder="Sélectionne une date"></date-picker>
+                    <div>
+                      <label class="block text-sm font-medium text-gray-700">Date de début</label>
+                      <date-picker
+                        inputClass="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        id="startDate"
+                        v-model="datePicker.start" format="DD/MM/YYYY HH:mm" value-type="format"
+                        :hour-options="datePicker.hours"
+                        type="datetime"
+                        placeholder="Sélectionne une date"></date-picker>
+                    </div>
+                    <label v-if="errors.datePicker.start" class="block text-sm text-red-500">Date de début invalide</label>
                   </div>
                   <div class="w-1/2 flex flex-col items-end">
                     <div>
                       <label class="block text-sm font-medium text-gray-700">Date de fin</label>
                       <date-picker
                         inputClass="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                        id="endDate"
-                        v-model="datePicker.end" format="DD/MM/YYYY HH:mm" type="datetime"
+                        id="startDate"
+                        v-model="datePicker.end" format="DD/MM/YYYY HH:mm" value-type="format"
                         :hour-options="datePicker.hours"
+                        type="datetime"
                         placeholder="Sélectionne une date"></date-picker>
+                      <label v-if="errors.datePicker.end" class="block text-sm text-red-500 ">Date de fin invalide</label>
                     </div>
                   </div>
                 </div>
@@ -110,9 +116,16 @@ export default {
       datePicker: {
         start: null,
         end: null,
-        hours: Array.from({ length: 20 }).map((_, i) => i + 5),
+        hours: Array.from({length: 20}).map((_, i) => i + 5),
       },
-      color: null,
+      color: "gray",
+      errors: {
+        datePicker: {
+          start: false,
+          end: false
+        },
+        title: false,
+      }
     }
   },
   methods: {
@@ -120,9 +133,12 @@ export default {
       this.$emit("closeModal", false);
     },
     create() {
+      if (!this.title) return this.errors.title = true;
+      if (!this.datePicker.start) return this.errors.datePicker.start = true;
+      if (!this.datePicker.end) return this.errors.datePicker.end = true;
       this.datePicker = {
-        start: DateTime.fromJSDate(this.datePicker.start).toISO(),
-        end: DateTime.fromJSDate(this.datePicker.end).toISO(),
+        start: DateTime.fromFormat(this.datePicker.start, 'dd/MM/yyyy HH:mm').toISO(),
+        end: DateTime.fromFormat(this.datePicker.end, 'dd/MM/yyyy HH:mm').toISO(),
       }
       this.$emit("createTimingScope", {title: this.title, datePicker: this.datePicker, color: this.color})
       this.$emit("closeModal", false);
