@@ -2,7 +2,8 @@
   <div class="flex h-full flex-col">
     <header
       class="fixed z-50 w-full bg-white flex flex-none items-center justify-between border-b border-gray-200 py-4 px-6">
-      <h1 class="text-lg font-semibold text-gray-900">
+      <h1 class="text-lg font-semibold flex flex-row items-center space-x-4 text-gray-900">
+        <img src="../static/logo.png" class="h-5" alt="">
         <time datetime="2022-01">Novembre 2022</time>
       </h1>
       <div class="flex items-center">
