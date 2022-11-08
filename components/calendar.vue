@@ -8,7 +8,8 @@
       <div class="flex items-center">
         <div class="flex items-center rounded-md shadow-sm md:items-stretch">
           <button type="button"
-                  class="flex items-center justify-center rounded-l-md border border-r-0 border-gray-300 bg-white py-2 pl-3 pr-4 text-gray-400 hover:text-gray-500 focus:relative md:w-9 md:px-2 md:hover:bg-gray-50">
+                  disabled="disabled"
+                  class="flex cursor-not-allowed items-center justify-center rounded-l-md border border-r-0 border-gray-300 bg-white py-2 pl-3 pr-4 text-gray-400 focus:relative md:w-9 md:px-2">
             <span class="sr-only">Previous month</span>
             <!-- Heroicon name: mini/chevron-left -->
             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
@@ -24,7 +25,8 @@
           </button>
           <span class="relative -mx-px h-5 w-px bg-gray-300 md:hidden"></span>
           <button type="button"
-                  class="flex items-center justify-center rounded-r-md border border-l-0 border-gray-300 bg-white py-2 pl-4 pr-3 text-gray-400 hover:text-gray-500 focus:relative md:w-9 md:px-2 md:hover:bg-gray-50">
+                  disabled="disabled"
+                  class="flex cursor-not-allowed items-center justify-center rounded-r-md border border-l-0 border-gray-300 bg-white py-2 pl-4 pr-3 text-gray-400 focus:relative md:w-9 md:px-2">
             <span class="sr-only">Next month</span>
             <!-- Heroicon name: mini/chevron-right -->
             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
@@ -54,17 +56,6 @@
                 d="M3 10a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM8.5 10a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM15.5 8.5a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"/>
             </svg>
           </button>
-
-          <!--
-            Dropdown menu, show/hide based on menu state.
-
-            Entering: "transition ease-out duration-100"
-              From: "transform opacity-0 scale-95"
-              To: "transform opacity-100 scale-100"
-            Leaving: "transition ease-in duration-75"
-              From: "transform opacity-100 scale-100"
-              To: "transform opacity-0 scale-95"
-          -->
           <div
             class="absolute right-0 z-10 mt-3 w-36 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
             role="menu" aria-orientation="vertical" aria-labelledby="menu-0-button" tabindex="-1">
@@ -276,8 +267,8 @@
             <!-- Events -->
             <ol class="col-start-1 col-end-2 row-start-1 grid grid-cols-1 sm:grid-cols-7 sm:pr-8"
                 style="grid-template-rows: 1.75rem repeat(288, minmax(0, 1fr)) auto">
-              <timing-scope v-for="(timing, iterator) in timingScopes" :title="timing.title" :datetime="timing.date"
-                            :grid-row="timing.gridRow" :color="timing.color" v-bind:key="iterator"/>
+              <timing-scope v-for="(timing, iterator) in timingScopes" :id="timing.id" :title="timing.title" :datetime="timing.date"
+                            :grid-row="timing.gridRow" :color="timing.color" v-bind:key="iterator" @delete="deleteTimingScope" @update="updateTimingScope"/>
             </ol>
           </div>
         </div>
@@ -344,6 +335,12 @@ export default {
   methods: {
     openModal() {
       this.$emit("openModal", true);
+    },
+    deleteTimingScope(id) {
+      this.$emit('delete', id);
+    },
+    updateTimingScope(id) {
+      this.$emit('update', id);
     }
   },
   mounted() {
